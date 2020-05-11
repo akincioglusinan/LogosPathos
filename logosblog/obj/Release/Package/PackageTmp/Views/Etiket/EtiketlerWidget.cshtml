@@ -1,0 +1,15 @@
+﻿@using System.Web
+@model IEnumerable<logosblog.Models.Etiket>
+<div class="row bottom tags-wrap">
+    <div class="col-full tags">
+        <h3>Etiketler</h3>
+
+        <div class="tagcloud">
+            @foreach (var etk in Model)
+            {
+                <a href="/etiket/listele/@etk.EtiketId/@etk.Adi.Replace(".", "dot").Replace(" ","-")">@etk.Adi (@etk.Makales.Where(x=>x.MakaleOnay==true).Count())</a>
+            }
+
+        </div> <!-- end tagcloud -->
+    </div> <!-- end tags -->
+</div>

@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Kategori Ekle - Sil";
+}
+
+@model IEnumerable<logosblog.Models.Kategori>
+
+<section class="s-content">
+    <div class="row">
+        <div class="col-full">
+
+            <h3 class="align-center">Mevcut Kategoriler</h3>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kategori Adı</th>
+                            <th>Açıklama</th>
+                            <th class="pull-right"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ktg in Model)
+                        {
+                            <tr>
+                                <td>@ktg.Adi</td>
+                                <td>@ktg.Aciklama</td>
+                                <td class="pull-right"><a href="/@ktg.KategoriId/KategoriSil" class="btn btn--stroke">Sil</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+                <h3 class="align-center">Yeni Kategori Ekle</h3>
+
+                <form action="/Admin/KategoriEkle" method="post">
+
+                    <div class="">
+                        <label><b>Kategori Adı</b></label>
+                        <input name="Adi" class="full-width" type="text" placeholder="" id="sampleInput">
+                    </div>
+
+                    <div class="">
+                        <label><b>Açıklama</b></label>
+                        <input name="Aciklama" class="full-width" type="text" placeholder="" id="sampleInput">
+                    </div>
+                    <div class="align-center">
+                        <button type="submit" class="btn--primary align-center">Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

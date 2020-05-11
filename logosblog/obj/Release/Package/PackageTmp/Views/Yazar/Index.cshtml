@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Yazarlar";
+}
+
+@using PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+@model IEnumerable<logosblog.Models.Kullanici>
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+    <h1 class="align-center">Yazarlar</h1>
+    <article class="row format-standard">
+        @foreach (var yzr in Model)
+        {
+            <div class="s-content__author">
+                @if (yzr.Resim != null)
+                {
+                    <img src="@yzr.Resim.OrtaBoyut" alt="">
+                }
+
+
+                <div class="s-content__author-about">
+                    <h4 class="s-content__author-name">
+                        <a href=" /@yzr.KullaniciId/YazarDetay/">@yzr.Adi @yzr.Soyadi</a>
+                    </h4>
+
+                    <p>
+                        @yzr.Aciklama
+                    </p>
+
+                    <ul class="s-content__author-social">
+                        <li><a href="/Yazar/Detay/@yzr.KullaniciId">Makale Sayısı : @yzr.Makales.Count</a></li>
+                        <li><a href="#0">Takipçiler :@yzr.Kullanicis.Count </a></li>
+                        <li><a href="#0">Takip Ettikeri : @yzr.Kullanici1.Count</a></li>
+                    </ul>
+                </div>
+            </div>
+        }
+        @Html.PagedListPager((IPagedList)Model, page => page.ToString())
+        <br /><br /><br /><br /><br />
+    </article>
+</section>
+
+
+

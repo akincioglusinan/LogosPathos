@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Etiket Ekle - Sil";
+}
+
+
+@model IEnumerable<logosblog.Models.Etiket>
+
+<section class="s-content">
+    <div class="row">
+        <div class="col-full">
+
+            <h3 class="align-center">Mevcut Etiketler</h3>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Etiket Adı</th>
+                            <th class="pull-right"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var etk in Model)
+                        {
+                            <tr>
+                                <td>@etk.Adi</td>
+                                <td class="pull-right"><a href="/@etk.EtiketId/EtiketSil/" class="btn btn--stroke">Sil</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+                <h3 class="align-center">Yeni Etiket Ekle</h3>
+
+                <form action="/Admin/EtiketEkle" method="post">
+
+                    <div class="">
+                        <label><b>Etiket Adı</b></label>
+                        <input name="Adi" class="full-width" type="text" placeholder="" id="sampleInput">
+                    </div>
+                    <div class="align-center">
+                        <button type="submit" class="btn--primary align-center">Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

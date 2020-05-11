@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Makale Onay";
+}
+@model IEnumerable<logosblog.Models.Makale>
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+    <article class="row format-standard">
+                <div class="col-twelve">
+                    <h3>Onay Bekleyen Makaleler</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Başlık</th>
+                                    <th>Yazar</th>
+                                    <th>Tarih</th>
+                                    <th>Sil</th>
+                                    <th>Onay</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var mkl in Model)
+                                {
+                                <tr>
+                                    <td><a target="_blank" rel="noopener noreferrer" href="/Makale/@mkl.MakaleId/Detay/">@mkl.Baslik</a></td>
+                                    <td>@mkl.Kullanici.Adi @mkl.Kullanici.Soyadi</td>
+                                    <td>@mkl.EklenmeTarihi</td>
+                                    <td><a href="/MakaleSil/@mkl.MakaleId" class="fa fa-remove">Sil</a></td>
+                                    <td><a href="/@mkl.MakaleId/MakaleOnay" class="btn btn--primary">Yayınla</a></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div><br /><br /><br /><br />
+                </div>
+    </article>
+</section>

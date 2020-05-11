@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "Giriş Yap";
+}
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+    <article class="row format-standard">
+                    <div class="respond">
+
+                        <h3 class="h2">Giriş Yap</h3>
+
+                        <form name="contactForm" id="contactForm" method="post" action="/Kullanici/GirisYap">
+                            <fieldset>
+
+                                <div class="form-field">
+                                    <input name="KullaniciAdi" type="text" id="cName" class="full-width" placeholder="Kullanıcı Adı" value="" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <input name="Parola" type="password" id="Parola" class="full-width" placeholder="Parolanız" value="" required>
+                                </div>
+                                <p style="color:red">@ViewBag.mesaj</p>
+                                <br />
+                                <input type="checkbox" name="hatirla" id="hatirla" > Beni Hatırla
+                                <br />
+                                <button type="submit" class="submit btn--primary btn--large full-width">Giriş</button>
+                                <br />
+                                <a href="/Kullanici/ParolamiUnuttum" class="align-right">Parolamı unuttum</a>
+                                <br /><br />
+                            </fieldset>
+                        </form>
+                    </div>
+       </article>
+</section>

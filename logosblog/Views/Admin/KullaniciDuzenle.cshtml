@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Kullanici Duzenle";
+}
+
+@model IPagedList<logosblog.Models.Kullanici>
+
+@using PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+
+<section class="s-content">
+    <div class="row">
+        <div class="pull-right">
+            <a href="/Kullanici/YazarOl" class="btn btn--primary">Yeni Kullanıcı Ekle</a>
+        </div>
+        <div class="col-full">
+            <h2 class="align-center">Kullanıcılar</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="align-center">Kullanıcı Adı</th>
+                            <th>İsim</th>
+                            <th>Email</th>
+                            <th>Kayıt Tarihi</th>
+                            <th>Rolleri</th>
+                            <th class="align-center">Yeni Rol Seç</th>
+                            <td>Rol Ata</td>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var kl in Model)
+                        {
+                            <tr>
+                                <td><a target="_blank" href="/@kl.KullaniciId/YazarDetay">@kl.KullaniciAdi</a></td>
+                                <td>@kl.Adi @kl.Soyadi</td>
+                                <td>@kl.MailAdres</td>
+                                <td>@kl.KayitTarihi</td>
+                                <td>
+                                    @foreach (var item in kl.KullaniciRols)
+                                    {
+                                        <span>@item.Rol.RolAdi</span>
+                                    }
+                                </td>
+                                <form action="/Admin/RolAta" method="post">
+                                    <td>
+
+                                        <select name="RolId">
+                                            <option selected>Rol Seç</option>
+                                            @foreach (var rols in ViewBag.Roller)
+                                            {
+                                                <option name="RolId" value="@rols.RolId">@rols.RolAdi</option>
+                                            }
+                                        </select>
+
+
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="KullaniciID" value="@kl.KullaniciId" />
+                                        <button type="submit" class="btn btn--stroke"><i class="fa fa-check"></i></button>
+                                    </td>
+                                </form>
+                                <td><a href="/@kl.KullaniciId/KullaniciSil/" class="btn btn--primary">Sil</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("KullaniciDuzenle", new { page }))
+            </div>
+        </div>
+    </div>
+</section>

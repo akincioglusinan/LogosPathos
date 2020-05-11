@@ -1,0 +1,24 @@
+﻿@model IEnumerable<logosblog.Models.Makale>
+<div class="col-eight md-six tab-full popular">
+    <h3>Öne Çıkan Makaleler</h3>
+
+    <div class="block-1-2 block-m-full popular__posts">
+        @if (Model != null)
+        {
+            foreach (var pm in Model)
+            {
+                <article class="col-block popular__post">
+                    <a href="/@pm.Kategori.Adi/@pm.MakaleId/@pm.Baslik.Replace(" ","-").Replace(".", "dot")" class="popular__thumb">
+                        <img src="@pm.Resim.KucukBoyut" alt="">
+                    </a>
+                    <h5><a href="/@pm.Kategori.Adi/@pm.MakaleId/@pm.Baslik.Replace(" ","-").Replace(".", "dot")">@pm.Baslik</a></h5>
+                    <section class="popular__meta">
+                        <span class="popular__author"><span>Yazar</span> <a href="#"></a></span>
+                        <span class="popular__date"><span>Tarih</span> <time datetime="2017-12-19">@pm.EklenmeTarihi</time></span>
+                    </section>
+                </article>
+            }
+        }
+    </div>
+
+</div>

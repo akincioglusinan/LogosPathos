@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Yazar Formu";
+}
+
+<script src="~/Content/js/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('input[name=KullaniciAdi]').change(function () {
+            $("#message").html("Kontrol ediliyor...");
+
+
+            var deger = $('#kuladi').val();
+
+            $.ajax({
+                type: "GET",
+                url: "/Kullanici/KullaniciKontrol/",
+                data: { id: deger },
+                success: function (data) {
+                    if (data == 1) {
+                        $("#message").html("<i style='font-size:16px; color: green' class='fa fa-check'> Kullanıcı Adı kullanılabilir.</i>");
+                    }
+                    else {
+                        $("#message").html("<i style='font-size:16px; color: red' class='fa fa-exclamation-triangle'> Kullanıcı Adı zaten alınmış.</i>");
+                    }
+                }
+            });
+
+        });
+
+        $("#Email").change(function () {
+            $("#message2").html("Kontrol ediliyor...");
+
+
+            var deger = $("#Email").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/Kullanici/KullaniciKontrol/",
+                data: { id: deger },
+                success: function (data) {
+                    if (data == 1) {
+                        $("#message2").html("<i style='font-size:16px; color: green' class='fa fa-check'> Mail Adresi kullanılabilir. </i>");
+                    }
+                    else {
+                        $("#message2").html("<i style='font-size:16px; color: red' class='fa fa-exclamation-triangle'> Mail Adresi zaten alınmış. </i>");
+                    }
+                }
+            });
+
+        });
+
+    });
+
+
+
+    var password = document.getElementById("Parola");
+    var confirm_password = document.getElementById("Parola_Confirm");
+    var password = document.getElementById("Email");
+    var confirm_password = document.getElementById("Email_Confirm");
+
+    //function IsSubGroupNeeded() {
+    //    var Subgrp = document.getElementById('myCheck').checked;
+    //    alert
+    //    if (Subgrp == false) {
+    //        alert(Subgrp);
+    //        loadgrdSubgroupItem();
+    //    }
+    //};
+    function validatePassword() {
+        var x = document.getElementById("myCheck").checked;
+       
+        if (Parola.value != Parola_Confirm.value) {
+            Parola_Confirm.setCustomValidity("Parolalar uyuşmuyor!");
+        }
+        else {
+            Parola_Confirm.setCustomValidity('');
+        }
+        if (Email.value != Email_Confirm.value) {
+            Email_Confirm.setCustomValidity("Email Adresleri uyuşmuyor!");
+        }
+        else {
+            Email_Confirm.setCustomValidity('');
+        }
+        if (x == false) {
+
+            alert("Kullanıcı Sözleşmesini onaylamadan Yazar olamazsınız.");
+            return handleError(validatePassword);
+
+        } else {
+            checkBox.setCustomValidity("");
+        }
+    }
+
+    checkBox.onchange = validatePassword;
+    Parola.onchange = validatePassword;
+    Parola_Confirm.onkeyup = validatePassword;
+    Email.onchange = validatePassword;
+    Email_Confirm.onkeyup = validatePassword;
+
+</script>
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+    <article class="row format-standard">
+        <div class="respond">
+            <h3 class="h2">Yazar Formu</h3>
+
+            <form method="post" action="/Kullanici/YazarOl">
+                <fieldset>
+
+                    <div class="form-field">
+                        <input name="KullaniciAdi" type="text" id="kuladi" class="full-width" placeholder="Kullanıcı Adı *" required>
+                        <div id="message"></div>
+                    </div>
+                    <div class="form-field">
+                        <input name="Adi" type="text" class="full-width" placeholder="Adı *" value="" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="Soyadi" type="text" class="full-width" placeholder="Soyadı *" value="" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="MailAdres" type="email" id="Email" class="full-width" placeholder="Email *" value="" required>
+                        <div id="message2"></div>
+                    </div>
+                    <div class="form-field">
+                        <input name="MailAdres" type="email" id="Email_Confirm" class="full-width" placeholder="Email adresi tekrar giriniz *" value="" required>
+                    </div>
+
+                    <div class="form-field">
+                        <input name="Parola" type="password" id="Parola" class="full-width" placeholder="Parola giriniz *" value="" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="Parola" type="password" id="Parola_Confirm" class="full-width" placeholder="Parolayı tekrar giriniz *" value="" required>
+                    </div>
+                    <div class="col-six tab-full pull-right">
+                        <div class="form-field">
+                            <br />
+                            <p>Doğum Tarihi</p>
+                            <input name="DogumTarihi" type="date" id="cName" class="tab-full" placeholder="Doğum Tarihi" value="">
+                        </div>
+                    </div>
+                    <div class="col-six tab-full pull-left">
+                        <div class="form-field">
+                            <textarea name="Aciklama" id="cMessage" class="full-width" maxlength="500" rows="2" placeholder="Hakkınızda bir şeyler..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col-six tab-full pull-right">
+                        <br /><br />
+                        <span><b>" * " işaretli alanların doldurulması zorunludur.</b></span>
+                        <label class="add-bottom">
+                            <input type="checkbox" id="myCheck" required>
+                            <span style="font-size:medium"> <b> <a target="_blank" href="/Kullanici/KullaniciSozlesmesi">Kullanıcı sözleşmesini</a> kabul ediyorum.</b></span>
+                            <p id="text" style="display:none"></p>
+                        </label>
+                    </div>
+                    <button type="submit" class="submit btn--primary btn--large full-width" onclick="validatePassword()">KAYIT OL</button>
+                    <br /><br /><br />
+                </fieldset>
+            </form>
+        </div>
+    </article>
+</section>
+

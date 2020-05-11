@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Makaleleri Düzenle";
+}
+@using PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+@model IEnumerable<logosblog.Models.Makale>
+<script src="~/Content/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#stbaslik', function myfunction() {
+            var baslik = $(this).find("option:selected").attr("titlebslk");//seçili option'u bul attribute'larından title'ı getir.
+            var mId = $(this).find("option:selected").attr("titlemkid");
+            $.ajax({
+                type: "GET",
+                url: "/Admin/SiteBaslik",
+                data: { SBaslik: baslik, mkid: mId },
+                success: function myfunction() {
+                    alert("Başlık Atandı");
+                },
+                error: function myfunction() {
+                    alert("Hata oluştu!");
+                }
+            });
+        });
+    });
+
+</script>
+
+<section class="s-content">
+    <div class="row">
+        <div class="pull-right">
+            <a href="/Makale/MakaleEkle" class="btn btn--primary">Yeni Makale Ekle</a>
+        </div>
+        <div class="col-full">
+            <h2 class="align-center">Makaleler</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="align-center">Başlık</th>
+                            <th>Yazar</th>
+                            <th>Eklenme Tarihi</th>
+                            <th>Site Başlığı</th>
+                            <td>Düzenle</td>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var mkl in Model.OrderByDescending(x => x.EklenmeTarihi))
+                        {
+                            <tr>
+                                <td><a href="/@mkl.Kategori.Adi/@mkl.MakaleId/@mkl.Baslik.Replace(" ","-")">@mkl.Baslik</a></td>
+                                <td>@mkl.Kullanici.Adi @mkl.Kullanici.Soyadi</td>
+                                <td>@mkl.EklenmeTarihi</td>
+                                <td>
+                                    <select id="stbaslik">
+                                        @if (mkl.SiteBaslik1 == true)
+                                        {
+                                            <option name="SiteBaslik" value="true" titlebslk="SiteBaslik1" titlemkid="@mkl.MakaleId">Büyük Başlık</option>
+                                        }
+                                        else if (mkl.SiteBaslik2 == true)
+                                        {
+                                            <option name="Sit" titlebslk="SiteBaslik1" titlemkid="@mkl.MakaleId" value="true">Küçük Başlık</option>
+                                        }
+                                        <option name="null" value="true" titlebslk="null" titlemkid="1">Atama Yok</option>
+                                        <option name="Site" titlebslk="SiteBaslik1" value="true" titlemkid="@mkl.MakaleId">Büyük Başlık</option>
+                                        <option name="SiteB" titlebslk="SiteBaslik2" value="true" titlemkid="@mkl.MakaleId">Küçük Başlık</option>
+                                    </select>
+
+                                </td>
+                                <td><a href="/MakaleDuzenle/@mkl.MakaleId" class="fa fa-edit">Düzenle</a></td>
+                                <td><a href="/MakaleSil/@mkl.MakaleId" class="fa fa-remove">Sil</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("MakaleDuzenle", new { page }))
+            </div>
+        </div>
+    </div>
+</section>
+

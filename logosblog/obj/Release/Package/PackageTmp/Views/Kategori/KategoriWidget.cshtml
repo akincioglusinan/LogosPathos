@@ -1,0 +1,8 @@
+﻿@model IEnumerable<logosblog.Models.Kategori>
+ <a href="#0" title="">Kategoriler</a>
+ <ul class="sub-menu">
+     @foreach (var ktg in Model)
+     {
+         <li><a href="/Ktg/@ktg.Adi.Replace(".", "dot").Replace(" ","-")">@ktg.Adi (@ktg.Makales.Where(x=>x.MakaleOnay==true).Count())</a></li>
+     }
+ </ul>

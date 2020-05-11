@@ -1,0 +1,142 @@
+﻿@{
+    Layout = null;
+}
+@using PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+@model IEnumerable<logosblog.Models.Makale>
+
+<script src="~/Content/js/jquery-3.2.1.min.js"></script>
+<script>
+    var globalid = 1;
+    $(document).ready(function myfunction() {
+        if (globalid == 1) {
+            $('#sfsayi-1').html("");
+            $('#sfsayi-1').html("<span class='pgn__num current'>" + (1) + "</span>");
+            $('#Geri').html("");
+        }
+        if ('@ViewBag.pndata[1]'== globalid) {
+            $('#Ileri').html("");
+        }
+        $('.Sayfa').click(function Sayfa() {
+            if ($(this).attr("rtid") == 0) {
+                var uid = globalid - 1;
+            } else if ($(this).attr("rtid") == 1) {
+                var uid = globalid + 1;
+            } else {
+                var uid = $(this).attr("sayi");
+            }
+                var ss = '#sfsayi-' + uid;
+                var rota = '@ViewBag.pndata[2]';
+                var ktgid = '@ViewBag.pndata[3]';
+                $.ajax({
+                    type: "POST",
+                    url: rota,
+                    data: { page: uid, id: ktgid, arama: ktgid },
+                    success: function myfunction(veri) {
+                        $(".masonry").html("");
+                        $(".masonry").html(veri);
+                        $(ss).html("");
+                        $(ss).html("<span class='pgn__num current'>" + (uid) + "</span>");
+                        globalid=uid;
+                    },
+                    error: function myfunction() {
+
+                    }
+                });
+
+            });
+        });
+</script>
+
+@helper IcerikKisalt(string metin)
+{
+    if (metin.Length > 200)
+    {
+        @Html.Raw(System.Web.HttpUtility.HtmlDecode(metin.Substring(0, 200)));
+    }
+    else
+    {
+        @Html.Raw(System.Web.HttpUtility.HtmlDecode(metin));
+    }
+}
+
+<section class="s-content">
+    <div class="row masonry-wrap">
+        <div class="masonry">
+            <a id="sbasi"></a>
+            @foreach (var item in Model)
+            {
+                <article class="masonry__brick entry format-standard" data-aos="fade-up">
+
+                    <div class="entry__thumb">
+                        <a href="/@item.Kategori.Adi/@item.MakaleId/@item.Baslik.Replace(" ","-").Replace(".", "dot")" class="entry__thumb-link">
+                            <img src="@item.Resim.OrtaBoyut"
+                                 srcset="@item.Resim.OrtaBoyut 1x, @item.Resim.BuyukBoyut 2x" alt="">
+                        </a>
+                    </div>
+
+                    <div class="entry__text">
+                        <div class="entry__header">
+
+                            <div class="entry__date">
+                                <a href="/@item.Kategori.Adi/@item.MakaleId/@item.Baslik.Replace(" ","-")"></a>
+                                @item.EklenmeTarihi.ToShortDateString()
+                                <i class="fa fa-eye pull-right">&nbsp;@item.GoruntulenmeSayisi</i>
+                                <i class="fa fa-comments pull-right">&nbsp @item.Yorums.Count&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                <i class="fa fa-heart pull-right">&nbsp @item.Begeni&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                            </div>
+
+                            <h1 class="entry__title"><a href="/@item.Kategori.Adi/@item.MakaleId/@item.Baslik.Replace(" ","-")">@item.Baslik</a></h1>
+
+                        </div>
+                        <div class="entry__excerpt">
+                            <p>
+                                @IcerikKisalt(item.Icerik)...
+                            </p>
+                        </div>
+                        <div class="entry__meta">
+                            <span class="entry__meta-links">
+                                @foreach (var tag in item.Etikets)
+                                {
+                                    <a href="/etiket/listele/@tag.EtiketId/@tag.Adi.Replace(".", "dot").Replace(" ","-")">@tag.Adi</a>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-full">
+            <nav class="pgn">
+                <ul>
+                    @*@Html.PagedListPager((IPagedList)Model, page => Url.Action("MakaleListele",
+                               new { page }),
+                               PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing( new AjaxOptions()
+                        {
+                           HttpMethod = "GET",
+                           UpdateTargetId = "MakaleListeleWidget",
+                        }))*@
+                    <li id="Geri"><a class="pgn__prev Sayfa" href="#sbasi" rtid="0">Geri</a></li>
+                    @for (int i = 1; i < ViewBag.pndata[1] + 1; i++)
+                    {
+                        <li id="sfsayi-@i"><a class="pgn__num Sayfa" href="#sbasi" sayi="@i">@i</a></li>
+                    }
+
+                    @*<li><a class="pgn__num  Sayfa" href="#" sayi="2">2</a></li>
+                        <li><span class="pgn__num current">3</span></li>
+                        <li><a class="pgn__num" href="3">3</a></li>
+                        <li><a class="pgn__num" href="#0">4</a></li>
+                        <li><a class="pgn__num" href="#0"></a></li>
+                        <li><span class="pgn__num dots">…</span></li>
+                        <li><a class="pgn__num" href="#0">8</a></li>*@
+                    <li id="Ileri"><a class="pgn__next Sayfa" href="#sbasi" rtid="1">İleri</a></li>
+
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>  

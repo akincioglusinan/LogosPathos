@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Anasayfa";
+}
+@model IEnumerable<logosblog.Models.Makale>
+@section pageheader{
+    <div class="pageheader-content row">
+        <div class="col-full">
+
+            <div class="featured">
+                @foreach (var item in Model.Where(x => x.SiteBaslik1 == true).Take(1))
+                {
+                        <div class="featured__column featured__column--big">
+                            <div class="entry" style="background-image:url('@item.Resim.BuyukBoyut');">
+
+                                <div class="entry__content">
+                                    <span class="entry__category"><a href="/kategori/Index/@item.Kategori.Adi">@item.Kategori.Adi</a></span>
+
+                                    <h1><a href="/@item.Kategori.Adi/@item.MakaleId/@item.Baslik.Replace(" ","-").Replace(".", "dot")" title="">@item.Baslik</a></h1>
+
+                                    <div class="entry__info">
+                                        <a href="#0" class="entry__profile-pic">
+                                            <img class="avatar" src="@item.Kullanici.Resim.OrtaBoyut" alt="">
+                                        </a>
+
+                                        <ul class="entry__meta">
+                                            <li><a href="/yazardetay/@item.KullaniciID">@item.Kullanici.Adi @item.Kullanici.Soyadi</a></li>
+                                            <li>@item.EklenmeTarihi.ToShortDateString()</li>
+                                        </ul>
+                                    </div>
+                                </div> <!-- end entry__content -->
+
+                            </div> <!-- end entry -->
+                        </div>
+                }
+                <!-- end featured__big -->
+                @foreach (var item in Model.Where(x=>x.SiteBaslik2==true).Take(2))
+                {
+                        <div class="featured__column featured__column--small">
+
+                            <div class="entry" style="background-image:url('@item.Resim.OrtaBoyut');">
+
+                                <div class="entry__content">
+                                    <span class="entry__category"><a href="#0">@item.Kategori.Adi</a></span>
+
+                                    <h1><a href="/@item.Kategori.Adi/@item.MakaleId/@item.Baslik.Replace(" ","-").Replace(".", "dot")" title="">@item.Baslik</a></h1>
+
+                                    <div class="entry__info">
+                                        <a href="#0" class="entry__profile-pic">
+                                            <img class="avatar" src="@item.Kullanici.Resim.OrtaBoyut" alt="">
+                                        </a>
+
+                                        <ul class="entry__meta">
+                                            <li><a href="/yazardetay/@item.KullaniciID">@item.Kullanici.Adi @item.Kullanici.Soyadi</a></li>
+                                            <li>@item.EklenmeTarihi.ToShortDateString()</li>
+                                        </ul>
+                                    </div>
+                                </div> <!-- end entry__content -->
+
+                            </div>
+
+                        </div>
+
+                }
+
+                <!-- end featured__small -->
+            </div> <!-- end featured -->
+
+        </div> <!-- end col-full -->
+    </div>
+}
+
+<section class="s-content">
+
+    <div class="row masonry-wrap">
+        <div class="masonry">
+
+            <div  id="MakaleListeleWidget" class="grid-sizer"></div>
+            @{
+                Html.RenderAction("MakaleListele");
+            }
+        </div>
+    </div>
+
+</section>

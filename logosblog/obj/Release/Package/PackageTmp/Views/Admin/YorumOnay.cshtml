@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "YorumOnay";
+}
+
+@model IEnumerable<logosblog.Models.Yorum>
+<section class="s-content">
+    <article class="row format-standard">
+        <div class="col-twelve">
+
+            <h3>Onay Bekleyen Yorumlar</h3>
+           
+            <div class="table-responsive">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Yorum</th>
+                            <th>Başlık</th>
+                            <th>İsim</th>
+                            <th>Yazar ?</th>
+                            <th>Tarih</th>
+                            <th>Sil</th>
+                            <th>Onay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var yrm in Model)
+                        {
+                            <tr>
+                                <td>@yrm.Aciklama</td>
+                                <td><a target="_blank" rel="noopener noreferrer" href="/@yrm.Makale.Kategori.Adi/@yrm.Makale.MakaleId/@yrm.Makale.Baslik.Replace(" ","-")">@yrm.Makale.Baslik">@yrm.Makale.Baslik.Substring(0,10) ...</a></td>
+                                <td>@yrm.AdSoyad</td>
+                                <td>
+                                    @if (yrm.KullaniciID != null)
+                                    {
+                                        <i>Evet</i>
+                                    }
+                                    else
+                                    {
+                                        <i>Hayır</i>
+                                    }
+                            </td>
+                            <td>@yrm.EklenmeTarihi</td>
+                                <td><a href="/@yrm.YorumId/YorumSil/" class="fa fa-remove"></a></td>
+                            <td><a href="/@yrm.YorumId/YorumOnay/" class="fa fa-check"></a></td>
+                        </tr>
+                    }
+
+                    </tbody>
+                </table>
+
+            </div><br /><br /><br /><br />
+        </div>
+    </article>
+</section>

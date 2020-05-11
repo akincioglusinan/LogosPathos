@@ -1,0 +1,274 @@
+﻿
+@{
+    ViewBag.Title = Model.Baslik;
+}
+
+@*@section head{
+        <script src="~/Content/js/jquery-3.2.1.min.js"></script>
+        <script>
+            $(document).ready(function myfunction() {
+                function Goruntulendi(id) {
+                    $.ajax{
+                        type: "GET",
+                            url:,
+                        success:
+
+                    }
+                }
+            })
+
+
+        </script>
+    }*@
+@model logosblog.Models.Makale
+<script src="~/Content/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function myfunction() {
+        $("a.begen").click(function myfunction() {
+            var id = $(this).data("id");
+            var url = "/MakaleBegen/" + id;
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function myfunction(result) {
+                    $("#bgnartis").html('&nbsp;' + result +'&nbsp;&nbsp;&nbsp;&nbsp;');
+                    $("#bgnartis2").html(result);
+                }
+            });
+        });
+
+        $("a.takip").click(function myfunction() {
+            var dat = $('#takipi').text()
+            var id = $(this).data("id");
+
+            if (dat == "Takip Et") {
+                var url = "/YazarTakipEt/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function myfunction(result) {
+                        $("#takipi").html(result);
+                    }
+                });
+            } else {
+                var url = "/YazarTakipCik/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function myfunction(result) {
+                        $("#takipi").html(result);
+                    }
+                });
+            }
+        });
+    })
+
+    function myFunction() {
+        alert("Yorumunuz başarıyla kaydedildi. Onaylandıktan Sonra Yayınlanacaktır.")
+    }
+</script>
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+
+    <article class="row format-standard">
+
+        <div class="s-content__header col-full">
+            @if (Model.MakaleOnay == false)
+            {
+                <div class="alert-box alert-box--success hideit">
+                    <p>Makaleniz başarılı bir şekilde kaydedildi. Onaylandıktan sonra yayınlanacaktır.</p>
+                    <i class="fa fa-times alert-box__close"></i>
+                </div>
+            }
+            <h1 class="s-content__header-title">
+                @Model.Baslik
+            </h1>
+            <ul class="s-content__header-meta">
+                <li class="date">@Model.EklenmeTarihi</li>
+                <li class="heart">
+
+                </li>
+                <li class="comment">
+                    <a><i class="fa fa-eye pull-right">&nbsp; @Model.GoruntulenmeSayisi</i></a>
+                    <a href="#commentbasi"><i class="fa fa-comments pull-right">&nbsp; @Model.Yorums.Count&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                    <a href="javascript:void(0)" class="begen" data-id="@Model.MakaleId"><i class="fa fa-heart pull-right" id="bgnartis">&nbsp;@Model.Begeni&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                </li>
+            </ul>
+        </div> <!-- end s-content__header -->
+
+        <div class="s-content__media col-full">
+            <div class="s-content__post-thumb">
+                @if (Model.Resim!=null)
+                {
+                <img src="@Model.Resim.BuyukBoyut"
+                     srcset="@Model.Resim.BuyukBoyut 500w"
+                     sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                }
+                
+            </div>
+        </div> <!-- end s-content__media -->
+
+        <div class="col-full s-content__main">
+            <p class="lead">@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Icerik))</p>
+
+
+
+            <p class="s-content__tags">
+
+                <span>Makale Etiketleri</span>
+
+                <span class="s-content__tag-list">
+                    @if (Model.Etikets != null)
+                    {
+                        foreach (var item in Model.Etikets)
+                        {
+                            <a href="/etiket/listele/@item.EtiketId/@item.Adi.Replace(".", "dot").Replace(" ","-")">@item.Adi</a>
+                        }
+                    }
+
+                </span>
+            </p> <!-- end s-content__tags -->
+            <div class="col-three pull-right">
+                <span>
+                    <a href="javascript:void(0)" class="begen pull-right" data-id="@Model.MakaleId">
+                        <img class="pull-right" style="color:white" height="50" width="50" src="~/Content/images/icons/clap-hands.svg" /><b id="bgnartis2">@Model.Begeni</b>
+                    </a>
+                </span>
+            </div>
+
+            <div class="s-content__author">
+                <img src="@Model.Kullanici.Resim.OrtaBoyut" alt="">
+
+                <div class="s-content__author-about">
+                    <h4 class="s-content__author-name">
+                        <a href="#0">@Model.Kullanici.Adi @Model.Kullanici.Soyadi</a>
+                    </h4>
+
+                    <p>
+                        @Model.Kullanici.Aciklama
+                    </p>
+
+                    <ul class="s-content__author-social">
+                        <li><a href="#0">Facebook</a></li>
+                        <li><a href="#0">Twitter</a></li>
+                        <li><a href="#0">GooglePlus</a></li>
+                        <li><a href="#0">Instagram</a></li>
+                    </ul>
+                    <div class="col-three pull-right">
+                        @if (ViewBag.Tkp == true)
+                        {
+                            <a href="javascript:void(0)" class="takip btn btn--primary pull-right" data-id="@Model.KullaniciID">
+                                <b id="takipi">Takipten Çık</b>
+                            </a>
+                        }
+                        else if (User.Identity.IsAuthenticated != true || Model.Kullanici.KullaniciAdi == User.Identity.Name)
+                        {
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" class="takip btn btn--primary pull-right" data-id="@Model.KullaniciID">
+                                <b id="takipi">Takip Et</b>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end s-content__main -->
+
+    </article>
+
+
+    <!-- comments
+    ================================================== -->
+   
+    <div class="comments-wrap">
+        <div id="" class="row">
+            <div class="col-full">
+                
+                <h3 class="h2">@Model.Yorums.Count Yorum</h3>
+                <a id="commentbasi"></a>
+                <!-- commentlist -->
+                <ol class="commentlist">
+                    
+                    <!-- end comment level 1 -->
+
+                    @foreach (var yorum in Model.Yorums.Where(x => x.YorumOnay == true))
+                    {
+                        <li class="depth-1 comment">
+
+                            <div class="comment__avatar">
+                                <img width="50" height="50" class="avatar" src="@yorum.Kullanici.Resim.OrtaBoyut" alt="">
+                            </div>
+
+                            <div class="comment__content">
+
+                                <div class="comment__info">
+                                    <cite>@yorum.AdSoyad</cite>
+
+                                    <div class="comment__meta">
+                                        <time class="comment__time">@yorum.EklenmeTarihi</time>
+                                    </div>
+                                </div>
+
+                                <div class="comment__text">
+                                    <p>
+                                        @yorum.Aciklama
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </li>
+                    }
+                    <!-- end comment level 1 -->
+                    <!-- end comment level 1 -->
+
+                </ol> <!-- end commentlist -->
+                <!-- respond
+    ================================================== -->
+                <div class="respond">
+
+                    <h3 class="h2">Yorum Ekle</h3>
+
+                    <form name="contactForm" method="post" action="/Makale/YorumYaz">
+                        <fieldset>
+                            @if (ViewBag.AktifKullanici != null)
+                            {
+                                <div class="form-field">
+                                    <input name="AdSoyad" type="text" id="cName" class="full-width" placeholder="İsim *" value="@ViewBag.AktifKullanici.Adi @ViewBag.AktifKullanici.Soyadi" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <input name="Email" type="text" id="cEmail" class="full-width" placeholder="Email *" value="@ViewBag.AktifKullanici.MailAdres" required>
+                                </div>
+                                <input name="KullaniciID" type="hidden" value="@ViewBag.AktifKullanici.KullaniciId" />
+                            }
+                            else
+                            {
+                                <div class="form-field">
+                                    <input name="AdSoyad" type="text" id="cName" class="full-width" placeholder="İsim *" value="" required>
+                                </div>
+
+                                <div class="form-field">
+                                    <input name="Email" type="text" id="cEmail" class="full-width" placeholder="Email *" value="" required>
+                                </div>
+                            }
+
+                            <div class="message form-field">
+                                <textarea name="Aciklama" id="cMessage" class="full-width" placeholder="Mesajınız *" required></textarea>
+                            </div>
+                            <input name="MakaleID" type="hidden" class="full-width" value="@Model.MakaleId">
+
+                            <button type="submit" onclick="myFunction()" class="submit btn--primary btn--large full-width">Gönder</button>
+
+                        </fieldset>
+                    </form> <!-- end form -->
+
+                </div> <!-- end respond -->
+
+            </div> <!-- end col-full -->
+
+        </div> <!-- end row comments -->
+    </div> <!-- end comments-wrap -->
+</section>
+

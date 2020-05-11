@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Hesabim";
+}
+@model logosblog.Models.Kullanici
+
+<script>
+    var password = document.getElementById("Parola");
+    var confirm_password = document.getElementById("Parola_Confirm");
+    var password = document.getElementById("Email");
+    var confirm_password = document.getElementById("Email_Confirm");
+
+    function validatePassword() {
+        if (Parola.value != Parola_Confirm.value) {
+            Parola_Confirm.setCustomValidity("Parolalar uyuşmuyor!");
+        }
+        else {
+            Parola_Confirm.setCustomValidity('');
+        }
+        if (Email.value != Email_Confirm.value) {
+            Email_Confirm.setCustomValidity("Email Adresleri uyuşmuyor!");
+        }
+        else {
+            Email_Confirm.setCustomValidity('');
+        }
+    }
+
+    Parola.onchange = validatePassword;
+    Parola_Confirm.onkeyup = validatePassword;
+    Email.onchange = validatePassword;
+    Email_Confirm.onkeyup = validatePassword;
+</script>
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+    <article class="row format-standard">
+        <div class="respond">
+
+            <h3 class="h2">Hesabım</h3>
+
+            <form method="post" action="/Kullanici/Hesabim" enctype="multipart/form-data">
+                <fieldset>
+                    <div class="form-field">
+                        <p>Profil Resmi</p>
+                        @if (Model.Resim != null)
+                        {
+                            <img src="@Model.Resim.OrtaBoyut" alt="Profil Resmi" />
+                        }
+                        <input type="file" name="profoto" value="" />
+                    </div>
+                    <div class="form-field">
+                        <input name="KullaniciAdi" type="hidden" id="cName" class="full-width" value="@Model.KullaniciAdi">
+                    </div>
+                    <div class="form-field">
+                        <input name="Adi" type="text" id="cName" class="full-width" placeholder="Adı *" value="@Model.Adi" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="Soyadi" type="text" id="cName" class="full-width" placeholder="Soyadı *" value="@Model.Soyadi" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="MailAdres" type="email" id="Email" class="full-width" placeholder="Email *" value="@Model.MailAdres" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="MailAdres" type="email" id="Email_Confirm" class="full-width" placeholder="Email adresi tekrar giriniz *" value="@Model.MailAdres" required>
+                    </div>
+
+                    <div class="form-field">
+                        <input name="Parola" type="password" id="Parola" class="full-width" placeholder="Parola giriniz *" value="@Model.Parola" required>
+                    </div>
+                    <div class="form-field">
+                        <input name="Parola" type="password" id="Parola_Confirm" class="full-width" placeholder="Parolayı tekrar giriniz *" value="@Model.Parola" required>
+                    </div>
+                    <div class="col-six tab-full pull-right">
+                        <div class="form-field">
+                            <br />
+                            <p>Doğum Tarihi</p>
+                            @if (Model.DogumTarihi != null)
+                            {
+                                <input name="DogumTarihi" type="date" value="@Model.DogumTarihi.Value.ToString("yyyy-MM-dd")">
+                            }
+                            else
+                            {
+                                <input name="DogumTarihi" type="date" value="">
+                            }
+                        </div>
+                    </div>
+                    <div class="col-six tab-full pull-left">
+                        <div class="form-field">
+                            <textarea name="Aciklama" id="cMessage" class="full-width" maxlength="500" rows="2" placeholder="Ben kimim!?">@Model.Aciklama</textarea>
+                        </div>
+                    </div>
+                    <div class="col-six tab-full pull-right">
+                        <span><b>" * " işaretli alanların doldurulması zorunludur.</b></span>
+                    </div>
+                    <button type="submit" class="submit btn--primary btn--large full-width" onclick="validatePassword()">Değiştir</button>
+                    <br /><br /><br />
+                </fieldset>
+            </form>
+        </div>
+    </article>
+</section>
+
+

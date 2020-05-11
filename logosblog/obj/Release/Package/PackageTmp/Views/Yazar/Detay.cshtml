@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "YazarDetay";
+}
+@using PagedList.Mvc; 
+@using PagedList;
+@model logosblog.Models.Kullanici
+
+<script src="~/Content/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function myfunction() {
+        $("a.takip").click(function myfunction() {
+            var dat = $('#takipi').text()
+            var id = $(this).data("id");
+
+            if (dat == "Takip Et") {
+                var url = "/YazarTakipEt/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function myfunction(result) {
+                        $("#takipi").html(result);
+                    }
+                });
+            } else {
+                var url = "/YazarTakipCik/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function myfunction(result) {
+                        $("#takipi").html(result);
+                    }
+                });
+            }
+        });
+    })
+</script>
+
+
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+    <h1 class="align-center">Yazar Sayfası</h1>
+
+    <article class="row format-standard">
+
+        <div class="s-content__author">
+            @if (Model.Resim != null)
+            {
+                <img src="@Model.Resim.OrtaBoyut" alt="">
+            }
+            <div class="s-content__author-about">
+                <h4 class="s-content__author-name">
+                    <a href="#">@Model.Adi @Model.Soyadi</a>
+                </h4>
+
+                <p>
+                    @Model.Aciklama
+                </p>
+
+                <ul class="s-content__author-social">
+                    <li><a href="#">Makale Sayısı : @Model.Makales.Count</a></li>
+                    <li><a href="#0">Takipçiler :  @Model.Kullanicis.Count</a></li>
+                    <li><a href="#0">Takip Ettikeri : @Model.Kullanici1.Count</a></li>
+                </ul>
+                @if (ViewBag.Tkp == true)
+                {
+                    <a href="javascript:void(0)" class="takip btn btn--primary pull-right" data-id="@Model.KullaniciId">
+                        <b id="takipi">Takipten Çık</b>
+                    </a>
+                }
+                else if (User.Identity.IsAuthenticated != true || Model.KullaniciAdi == User.Identity.Name)
+                {
+
+                }
+                else
+                {
+                    <a href="javascript:void(0)" class="takip btn btn--primary pull-right" data-id="@Model.KullaniciId">
+                        <b id="takipi">Takip Et</b>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="col-twelve">
+            <div class="table-responsive">
+                <h3>Yazdığı Makaleler</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Başlık</th>
+                            <th class="align-center">Tarih</th>
+                            <th class="align-center">Beğeni</th>
+                            <th class="align-center">Görüntülenme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*Model.Makales.Where(x => x.MakaleOnay == true)*@
+                        @foreach (var mkl in ViewBag.ymkl)
+                        {
+
+                            <tr>
+                                <td><a href="/@mkl.Kategori.Adi/@mkl.MakaleId/@mkl.Baslik.Replace(" ","-")">@mkl.Baslik</a></td>
+                                <td>@mkl.EklenmeTarihi</td>
+                                <td class="align-center">@mkl.Begeni</td>
+                                <td class="align-center">@mkl.GoruntulenmeSayisi</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager((IPagedList)ViewBag.ymkl, page => page.ToString())
+            </div><br /><br /><br /><br />
+        </div>
+
+    </article>
+</section>

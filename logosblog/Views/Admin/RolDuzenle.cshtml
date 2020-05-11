@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Rol Düzenle";
+}
+
+@model IEnumerable<logosblog.Models.Rol>
+
+<section class="s-content">
+    <div class="row">
+        <div class="col-full">
+
+            <h3 class="align-center">Mevcut Roller</h3>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rol Adı</th>
+                            <th class="pull-right"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var rol in Model)
+                        {
+                            <tr>
+                                <td>@rol.RolAdi</td>
+                                @if (rol.RolAdi != "Admin" && rol.RolAdi != "Yazar")
+                                {
+                                    <td class="pull-right"><a href="/@rol.RolId/RolSil/" class="btn btn--stroke">Sil</a></td>
+                                }
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+                <h3 class="align-center">Yeni Rol Ekle</h3>
+
+                <form action="/Admin/RolEkle" method="post">
+
+                    <div class="">
+                        <label><b>Rol Adı</b></label>
+                        <input name="RolAdi" class="full-width" type="text" placeholder="" id="sampleInput">
+                    </div>
+                    <div class="align-center">
+                        <button type="submit" class="btn--primary align-center">Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

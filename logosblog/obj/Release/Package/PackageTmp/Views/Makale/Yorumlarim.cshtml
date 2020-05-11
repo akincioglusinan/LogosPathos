@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Yorumlarim";
+}
+@using PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+@model IEnumerable<logosblog.Models.Yorum>
+
+<section class="s-content">
+    <article class="row format-standard">
+        <div class="col-twelve">
+
+            <h3 class="align-center">Yazdığım Yorumlar</h3>
+
+            <div class="table-responsive">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Yorum</th>
+                            <th>Başlık</th>
+                            <th>Tarih</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var yrm in Model)
+                        {
+                            <tr>
+                                <td>@yrm.Aciklama</td>
+                                <td><a target="_blank" rel="noopener noreferrer" href="/Makale/Detay/@yrm.Makale.MakaleId">@yrm.Makale.Baslik.Substring(0, 10) ...</a></td>
+                                <td>@yrm.EklenmeTarihi</td>
+                                <td><a href="/Makale/YorumSil/@yrm.YorumId" onclick="return confirm('Bu yorumu silmek istediğinizden emin misiniz?');" class="fa fa-remove"></a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("Yorumlarim", new { page }))
+            </div><br /><br /><br /><br />
+        </div>
+    </article>
+</section>

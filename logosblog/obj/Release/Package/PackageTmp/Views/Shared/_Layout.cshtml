@@ -1,0 +1,290 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="no-js" lang="tr">
+<head>
+    <!--- basic page needs
+    ================================================== -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Logos Pathos - @ViewBag.Title</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="/Content/css/base.css">
+    <link rel="stylesheet" href="/Content/css/vendor.css">
+    <link rel="stylesheet" href="/Content/css/main.css">
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <!-- script
+    ================================================== -->
+    <script src="/Content/js/modernizr.js"></script>
+    <script src="/Content/js/pace.min.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="/Content/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/Content/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body id="top">
+
+    <!-- pageheader
+    ================================================== -->
+    <div class="s-pageheader">
+
+        <header class="header">
+            <div class="header__content row">
+
+                <div class="header__logo">
+                    <a class="logo" href="/">
+                        <img src="/Content/images/logo-badoni-poster.JPG" alt="Homepage">
+                    </a>
+                </div> <!-- end header__logo -->
+                @*<ul class="header__social">
+                        <li>
+                            <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#0"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>*@ <!-- end header__social -->
+                @*@{
+                        Html.RenderPartial("Arama");
+                    }*@
+                <a class="header__search-trigger" href="#0"></a>
+
+                <div class="header__search">
+
+                    <form role="search" method="post" class="header__search-form" action="/Home/Arama">
+                        <label>
+                            <span class="hide-content">Aranacak kelime en az 3 karakterden oluşmalı!</span>
+                            <input type="search" class="search-field" placeholder="" value="" minlength="3" name="arama" title="Şunu Ara:" autocomplete="off">
+                        </label>
+                        <input type="submit" class="search-submit" value="Arama">
+                    </form>
+
+                    <a href="#0" title="Aramayı Kapat" class="header__overlay-close">Kapat</a>
+
+                </div>
+                <!-- end header__search -->
+
+
+                <a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
+
+                <nav class="header__nav-wrap">
+
+                    <h2 class="header__nav-heading h6">Site Navigation</h2>
+
+                    <ul class="header__nav">
+                        <li class="current"><a href="/" title="">Anasayfa</a></li>
+                        <li class="has-children">
+
+
+                            @{
+                                Html.RenderAction("KategoriWidget", "Kategori");
+                            }
+                        </li>
+                        <li><a href="/Yazarlar" title="">Yazarlar</a></li>
+                        <li><a href="/Home/Hakkinda" title="">Hakkında</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="has-children">
+                                <a href="#" title="">Yazar Paneli</a>
+                                <ul class="sub-menu">
+                                    <li><a href="/Kullanici/Hesabim">@User.Identity.Name</a></li>
+                                    <li><a href="/Makale/MakaleEkle">Makale Ekle</a></li>
+                                    <li><a href="/Makale/Makalelerim">Makalelerim</a></li>
+                                    <li><a href="/Makale/Yorumlarim">Yorumlarım</a></li>
+                                    <li><a href="/Yazar/YazarTakip">Takip Ettiğim Yazarlar</a></li>
+                                    <li><a href="/Kullanici/CikisYap">Çıkış Yap</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="/Kullanici/GirisYap/" title="">Giriş Yap</a></li>
+                            <li><a href="/Kullanici/YazarOl" title="">Yazar Ol</a></li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="has-children">
+                                <a href="/Admin/Index" title="">Admin Paneli</a>
+                                <ul class="sub-menu">
+                                    <li><a href="/Admin/KategoriDuzenle">Kategoriler</a></li>
+                                    <li><a href="/Admin/EtiketDuzenle">Etiketler</a></li>
+                                    <li><a href="/Admin/RolDuzenle">Roller</a></li>
+                                    <li><a href="/Admin/KullaniciDuzenle">Kullanıclar</a></li>
+                                    <li><a href="/Admin/MakaleDuzenle">Makaleler</a></li>
+                                    <li><a href="/Admin/MakaleOnay">Makale Onayları</a></li>
+                                    <li><a href="/Admin/YorumOnay">Yorum Onayları</a></li>
+                                    <li><a href="/Kullanici/CikisYap/">Çıkış Yap</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul> <!-- end header__nav -->
+
+                    <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Kapat</a>
+
+                </nav> <!-- end header__nav-wrap -->
+
+            </div> <!-- header-content -->
+        </header> <!-- header -->
+        <!-- end pageheader-content row -->
+
+    </div> <!-- end s-pageheader -->
+    <!-- s-content
+    ================================================== -->
+    @RenderSection("pageheader", false)
+    @RenderBody()
+    <!-- s-content -->
+    <!-- s-extra
+    ================================================== -->
+    <section class="s-extra">
+
+        <div class="row top">
+
+            @{
+                Html.RenderAction("OneCikanMakalelerWidget", "Home");
+            }
+
+
+            <div class="col-four md-six tab-full about">
+                @{
+                    Html.RenderPartial("SiteHakkinda", "Home");
+                }
+            </div> <!-- end about -->
+
+        </div> <!-- end row -->
+
+        @{
+            Html.RenderAction("EtiketlerWidget", "Etiket");
+        }
+
+        <!-- end tags-wrap -->
+
+    </section> <!-- end s-extra -->
+    <!-- s-footer
+    ================================================== -->
+    <footer class="s-footer">
+
+        <div class="s-footer__main">
+            <div class="row">
+
+                <div class="col-two md-four mob-full s-footer__sitelinks">
+
+                    <h4>Hızlı Linkler</h4>
+
+                    <ul class="s-footer__linklist">
+                        <li><a href="/home/index">Anasayfa</a></li>
+                        <li><a href="/kategori/index">Kategoriler</a></li>
+                        <li><a href="/home/hakkinda">Hakkında</a></li>
+                    </ul>
+
+                </div> <!-- end s-footer__sitelinks -->
+
+                <div class="col-two md-four mob-full s-footer__archives">
+
+                    <h4>Arşiv</h4>
+
+                    <ul class="s-footer__linklist">
+                        <li><a href="#0">Mayıs 2020</a></li>
+                    </ul>
+
+                </div> <!-- end s-footer__archives -->
+
+                <div class="col-two md-four mob-full s-footer__social">
+
+                    @*<h4>Social</h4>
+
+                        <ul class="s-footer__linklist">
+                            <li><a href="#0">Facebook</a></li>
+                            <li><a href="#0">Instagram</a></li>
+                            <li><a href="#0">Twitter</a></li>
+                            <li><a href="#0">Pinterest</a></li>
+                            <li><a href="#0">Google+</a></li>
+                            <li><a href="#0">LinkedIn</a></li>
+                        </ul>*@
+
+                </div> <!-- end s-footer__social -->
+
+                <div class="col-five md-full end s-footer__subscribe">
+
+                    <h4>Makale Bülteni</h4>
+
+                    <p>Yeni eklenen makalelerin mail kutunuza gelmesini istiyorsanız, makale bültenimize aşağıdan abone olabilirsiniz.</p>
+
+                    @{
+                        Html.RenderPartial("MakaleBulten", "Home");
+                    }
+
+                </div> <!-- end s-footer__subscribe -->
+
+            </div>
+        </div> <!-- end s-footer__main -->
+
+        <div class="s-footer__bottom">
+            <div class="row">
+                <div class="col-full">
+                    <div class="s-footer__copyright">
+                        <span>© Copyright Logos Pathos 2020</span>
+                        <span>Site Tema <a href="https://colorlib.com/">Colorlib</a></span>
+                    </div>
+
+                    <div class="go-top">
+                        <a class="smoothscroll" title="Back to Top" href="#top"></a>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end s-footer__bottom -->
+
+    </footer> <!-- end s-footer -->
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader">
+            <div class="line-scale">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="/Content/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        function Bulten() {
+            var dat = $('#mc-email').val();
+            $.ajax({
+                type: "GET",
+                url: "/Home/MakaleBulten",
+                data: { model: dat },
+                success: function myfunction() {
+                    // document.location.href = veri;
+                },
+            });
+        }
+    </script>
+    <script src="/Content/js/plugins.js"></script>
+    <script src="/Content/js/main.js"></script>
+
+</body>
+
+</html>

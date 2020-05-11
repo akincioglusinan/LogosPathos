@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "YazarTakip";
+}
+
+@using PagedList.Mvc; @*//import this so we get our HTML Helper*@
+@using PagedList; @*//import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+
+@model IEnumerable<logosblog.Models.Kullanici>
+
+<section class="s-content">
+    <h1 class="align-center">Yazar Takip</h1>
+    <article class="row format-standard">
+        <div class="col-twelve">
+            <div class="table-responsive">
+                <h3 class="align-center">Takip Ettiğim Yazarlar</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="align-center">Yazar Adı</th>
+                            <th class="align-center">Makale Sayısı</th>
+                            <th class="align-center">Üyelik Tarihi</th>
+                            <th class="align-center">Takip Ettikleri</th>
+                            <th class="align-center">Takipten Çıkar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var yzr in Model)
+                        {
+
+                            <tr>
+                                <td class="align-center"><a href="/YazarDetay/@yzr.KullaniciId">@yzr.Adi @yzr.Soyadi</a></td>
+                                <td class="align-center">@yzr.Makales.Count</td>
+                                <td class="align-center">@yzr.KayitTarihi</td>
+                                <td class="align-center">@yzr.Kullanici1.Count</td>
+                                <td class="align-center"><a href="/Yazar/YazarTakip/@yzr.KullaniciId" onclick="return confirm('Takibi bırakmak istediğinizden emin misiniz?');" class="fa fa-remove"></a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("YazarTakip", new { page }))
+            </div><br /><br /><br /><br />
+        </div>
+    </article>
+</section>
